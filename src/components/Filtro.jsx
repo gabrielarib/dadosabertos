@@ -48,15 +48,11 @@ export default function Filtro({ changeAno }) {
                             <div className='row mt-4'>
                                 <div className='col-md-6 mb-4'>
                                     <div className="form-check ms-3">
-                                        processos.map((processos, index) => (
                                         <input className="fs-4 form-check-input"
                                                 type="checkbox"
                                                 value=""
                                                 id="inteiro"
-                                                key={processos.numero}
-                                                onClick={(e) => handleClick(e, processos.numero)}
                                         />
-                                        ))
                                         <label className="ps-2 form-check-label" htmlFor="inteiro">
                                             2020 <br/>
                                         </label>
