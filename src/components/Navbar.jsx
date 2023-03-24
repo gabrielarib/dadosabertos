@@ -5,6 +5,7 @@ import './css/Navbar.css';
 import logo from '../assets/OrçamentoSecreto.png';
 
 export default function Navbar() {
+
     return (
         <div>
             <nav className='nav-topo'>

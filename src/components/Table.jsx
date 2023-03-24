@@ -6,10 +6,10 @@ import { processos } from '../../backend/dados';
 export default function Table() {
   return (
     <div className="container-airbnb">
-        <table className="table table-responsive table-striped table-light border">
+        <table className="table table-light table-striped border">
   <thead>
     <tr>
-      <th scope="col">Nome Autor</th>
+      <th scope="col" className="tooltip bs-tooltip-top" role="tooltip">Nome Autor</th>
       <th scope="col">Tipo Autor</th>
       <th scope="col">Nome Beneficiario</th>
       <th scope="col">Estado Beneficiario</th>
