@@ -18,7 +18,6 @@ export default function Filtro({ changeAno }) {
 
     return (  
         <div className='pt-2 container-airbnb justify-content-between align-items-center'>
-            <span className='fw-bold'><i className='mdi mdi-help-circle-outline' title="Quantidade total de registros filtrados"></i>&nbsp;Registros totais: 10</span>
            <button type="button" className="btn btn-primary my-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 <i className='mdi mdi-filter-variant me-2'></i>
                 Filtros

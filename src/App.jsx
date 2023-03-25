@@ -5,6 +5,14 @@ import '@mdi/font/css/materialdesignicons.css'
 import Filtro from './components/Filtro';
 import Footer from './components/Footer';
 import Navbar from './components/Navbar'
+import TableEstado from './components/TableEstado';
+import TableAutor from './components/TableAutor';
+import TableAno from './components/TableAno';
+import TableAutorAno from './components/TableAutorAno';
+import TableOrgão from './components/TableOrgão';
+import TableResumo from './components/TableResumo';
+import TableMunicipioAutor from './components/TableMunicipioAutor';
+import TableMunicipio from './components/TableMunicipio';
 import Table from './components/Table';
 import Title from './components/Title'
 import { useEffect, useState } from 'react';
@@ -45,8 +53,49 @@ function App() {
     <div>
       <Navbar/>
       <Title/>
-      <Filtro changeAno = {changeAno}/>
-      <Table/>
+      <TableResumo/>
+
+      <div className='row my-5 border-bottom'>
+        <div className='col-6'>
+          <TableEstado/>
+        </div>
+        <div className='col-6'>
+          <TableAutor/>
+        </div>
+      </div>
+
+      <div className='row my-5 border-bottom'>
+        <div className='col-6'>
+          <TableAno/>
+        </div>
+        <div className='col-6'>
+          <TableAutorAno/>
+        </div>
+      </div>
+
+      <div className='row my-5 border-bottom'>
+        <div className='col-6'>
+          <TableOrgão/>
+        </div>
+        <div className='col-6'>
+          <TableAutor/>
+        </div>
+      </div>
+
+      <div className='row my-5 border-bottom'>
+        <div className='col-6'>
+          <TableMunicipio/>
+        </div>
+        <div className='col-6'>
+          <TableMunicipioAutor/>
+        </div>
+      </div>
+
+      <div className='my-5 border-bottom'>
+        <Filtro changeAno = {changeAno}/>
+        <Table/>
+      </div>
+      
       <Footer/>
     </div>
   )
