@@ -18,14 +18,14 @@ export default function Filtro({ changeAno }) {
 
     return (  
         <div className='pt-2 container-airbnb justify-content-between align-items-center'>
-            <span className='fw-bold'>Total registros: 10</span>
+            <span className='fw-bold'><i className='mdi mdi-help-circle-outline' title="Quantidade total de registros filtrados"></i>&nbsp;Registros totais: 10</span>
            <button type="button" className="btn btn-primary my-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 <i className='mdi mdi-filter-variant me-2'></i>
                 Filtros
             </button>
             
-            <div className="modal fade" id="exampleModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div className="modal-dialog modal-lg">
+            <div className="modal fade" id="exampleModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal-dialog modal-lg" role="document">
                 <div className="modal-content">
                 <div className="modal-header text-center">
                         <button type="button" className="btn-close opacity-100" data-bs-dismiss="modal" aria-label="Close"></button>

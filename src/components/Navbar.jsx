@@ -14,7 +14,7 @@ export default function Navbar() {
                         <img className='logo' src={logo} alt="Logo do Site"/>
                     </div>
                     <div className='d-flex align-items-center justify-content-end col-sm-6'>
-                        <a href="https://exposedvocesabia.wixsite.com/exposed---tudo-que-e/blank-1" target="_blank" className='link-especial'><i className='mdi mdi-alert-circle'></i>       Entenda o termo</a>
+                        <a href="https://exposedvocesabia.wixsite.com/exposed---tudo-que-e/blank-1" target="_blank" className='link-especial'><i className='mdi mdi-help-box'></i>       Entenda o termo</a>
                     </div>
                 </div>
             </nav>
