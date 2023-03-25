@@ -5,8 +5,17 @@ import './css/Table.css';
 import { processos } from '../../backend/dados';
 
 export default function Table() {
+  const [startIndex, setStartIndex] = useState(0);
+
+  const handleNext = () => {
+    setStartIndex(startIndex + 3);
+  };
+  const handlePrevious = () => {
+    setStartIndex(startIndex - 3);
+  };
+
   return (
-    <div className="container-airbnb">
+    <div className="container-airbnb row">
         <table className="table table-light table-striped border">
   <thead>
     <tr>
@@ -23,7 +32,7 @@ export default function Table() {
     </tr>
   </thead>
   <tbody>
-    {processos.map((processo,index) => (
+    {processos.slice(startIndex, startIndex + 3).map((processo,index) => (
       <tr key={index}>
         <td>{processo.nomeAutor}</td>
         <td>{processo.tipoAutor}</td>
@@ -44,6 +53,17 @@ export default function Table() {
     </tr>
   </tbody>
 </table>
+<div>
+  <button onClick={handlePrevious} disabled={startIndex === 0}>
+    Anterior
+  </button>
+  <button onClick={handleNext} disabled={startIndex + 3 >= processos.length}>
+    Próximo
+  </button>
+</div>
+
+
+
     </div>
-  )
+  );
 }
