@@ -8,3 +8,16 @@ td{
     text-overflow: ellipsis;
   }
   
+  .autosuggest-container {
+    position: relative;
+   margin-bottom: 30px;
+  }
+  
+  .autosuggest-suggestions-container {
+    position: absolute;
+    top: 100%;
+    z-index: 1;
+    background-color: #d3d3d3;
+    border: rgba(0, 0, 0, 0.85);
+  }
+  

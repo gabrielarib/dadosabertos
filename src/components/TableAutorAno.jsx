@@ -53,10 +53,11 @@ export default function Table() {
       <tr>
         <td>Paula</td>
         <td>2020</td>
+        <td>16</td>
         <td>957.000</td>
       </tr>
     <tr>
-      <td colSpan="1"></td>
+      <td colSpan="2"></td>
       <td className='fw-bold'>Valor total&nbsp;<i className='mdi mdi-help-circle-outline' title="Valor total obtido pela soma dos valores das emendas listadas na tabela"></i></td>
       <td className='fw-bold'>3.287.000</td>
     </tr>

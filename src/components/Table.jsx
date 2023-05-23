@@ -1,10 +1,14 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import './css/Table.css';
-
-import { processos } from '../../backend/dados';
+import axios from 'axios';
+import Autosuggest from 'react-autosuggest';
+import Filtro from './Filtro';
 
 export default function Table() {
+  const [processos, setProcessos] = useState([]);
+  const [value, setValue] = useState("");
+  const [filteredProcessos, setFilteredProcessos] = useState([]);
   const [startIndex, setStartIndex] = useState(0);
 
   const handleNext = () => {
@@ -14,8 +18,70 @@ export default function Table() {
     setStartIndex(startIndex - 3);
   };
 
+  useEffect(() => {
+    axios.get('http://localhost:3000/processo/processoTudo')
+      .then(response => {
+        setProcessos(response.data);
+        setFilteredProcessos(response.data); 
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }, []);
+
+  const getSuggestions = (value) => {
+    const inputValue = value.trim().toLowerCase();
+    const inputLength = inputValue.length;
+
+    return inputLength === 0
+      ? []
+      : filteredProcessos.filter(
+          (processo) =>
+            processo.Autor.toLowerCase().slice(0, inputLength) === inputValue
+        );
+  };
+
+  const renderSuggestion = (suggestion) => <div>{suggestion.Autor}</div>;
+
+  const onSuggestionsFetchRequested = ({ value }) => {
+    setFilteredProcessos(getSuggestions(value));
+  };
+
+  const onSuggestionsClearRequested = () => {
+    setFilteredProcessos(processos);
+  };
+
+  const onChange = (event, { newValue }) => {
+    setValue(newValue);
+  };
+
+  const inputProps = {
+    placeholder: "Digite o nome do Autor",
+    value,
+    onChange: onChange,
+  };
+
   return (
     <div className="container-airbnb row">
+      <span className='fs-4 fw-bold'>Geral</span>
+      <div className='row  justify-content-between align-items-center'>
+      <div className='col-2'>
+        <Autosuggest
+          suggestions={filteredProcessos}
+          onSuggestionsFetchRequested={onSuggestionsFetchRequested}
+          onSuggestionsClearRequested={onSuggestionsClearRequested}
+          getSuggestionValue={(suggestion) => suggestion.Autor}
+          renderSuggestion={renderSuggestion}
+          inputProps={inputProps}
+          ></Autosuggest>
+          </div>
+        <div className='col-2'>
+            <Filtro/>
+        </div>
+        <div className='col-2'>
+            <span className='fw-bold'><i className='mdi mdi-help-circle-outline' title="Quantidade total de registros filtrados"></i>&nbsp;Registros totais: 10</span>
+        </div>
+      </div>
         <table className="table table-light table-striped border">
   <thead>
     <tr>
@@ -32,18 +98,18 @@ export default function Table() {
     </tr>
   </thead>
   <tbody>
-    {processos.slice(startIndex, startIndex + 3).map((processo,index) => (
+    {filteredProcessos.slice(startIndex, startIndex + 3).map((processo,index) => (
       <tr key={index}>
-        <td>{processo.nomeAutor}</td>
-        <td>{processo.tipoAutor}</td>
-        <td>{processo.nomeBeneficiario}</td>
-        <td>{processo.estadoBeneficiario}</td>
-        <td>{processo.nomeOrgao}</td>
-        <td>{processo.uo}</td>
-        <td>{processo.ano}</td>
-        <td className='cell-truncate'>{processo.objeto}</td>
-        <td className='cell-truncate'>{processo.justificativa}</td>
-        <td>{processo.valor.toLocaleString('pt-BR')}</td>
+        <td>{processo.Autor}</td>
+        <td>{processo.Tipo_autor}</td>
+        <td>{processo.Nome_beneficiario}</td>
+        <td>{processo.Uf_Beneficiario}</td>
+        <td>{processo.Nome_orgao}</td>
+        <td>{processo.Cod_orgao}</td>
+        <td>{processo.Data_de_cadastro}</td>
+        <td>{processo.Objeto}</td>
+        <td>{processo.Justificativa}</td>
+        <td>{processo.Valor_Solicitado.toLocaleString('pt-BR')}</td>
       </tr>
     ))}
     <tr>
