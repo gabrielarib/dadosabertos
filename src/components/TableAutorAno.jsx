@@ -10,8 +10,8 @@ export default function TableAutorAno() {
   const [processos, setProcessos] = useState([]);
   const [filteredProcessos, setFilteredProcessos] = useState([]);
   const [startIndex, setStartIndex] = useState(0);
-  const [suggestions, setSuggestions] = useState([]);
-  const [searchValue, setSearchValue] = useState('');
+  const [autorSuggestions, setAutorSuggestions] = useState([]);
+  const [autorSearchValue, setAutorSearchValue] = useState('');
   const [valorOrder, setValorOrder] = useState('asc');
   const [quantidadeOrder, setQuantidadeOrder] = useState('asc');
   const [autorOrder, setAutorOrder] = useState('asc');
@@ -55,8 +55,8 @@ export default function TableAutorAno() {
 
   const handleReset = () => {
     setFilteredProcessos(processos);
-    setSearchValue('');
-    setSuggestions([]);
+    setAutorSearchValue('');
+    setAutorSuggestions([]);
     setValorOrder('asc'); // Redefine a direção da ordenação para ascendente
   };
   
@@ -86,7 +86,7 @@ export default function TableAutorAno() {
   }, []);
 
   // Define as sugestões para o campo de busca
-  const getSuggestions = (value) => {
+  const getAutorSuggestions = (value) => {
     const inputValue = value.trim().toLowerCase();
     const inputLength = inputValue.length;
 
@@ -96,15 +96,15 @@ export default function TableAutorAno() {
   };
 
   // Renderiza as sugestões de busca
-  const renderSuggestion = (suggestion) => (
+  const renderAutorSuggestion = (suggestion) => (
     <div>
       {suggestion.Autor}
     </div>
   );
 
   // Define a ação a ser tomada quando o usuário seleciona uma sugestão
-  const onSuggestionSelected = (event, { suggestionValue }) => {
-    setSearchValue(suggestionValue);
+  const onAutorSuggestionSelected = (event, { suggestionValue }) => {
+    setAutorSearchValue(suggestionValue);
     setFilteredProcessos(processos.filter(processo => processo.Autor === suggestionValue));
     setValorOrder('asc'); // Redefine a direção da ordenação ao selecionar uma sugestão
   };
@@ -183,21 +183,21 @@ export default function TableAutorAno() {
 
 
   // Define o valor do campo de busca quando o usuário digita
-  const onInputChange = (event, { newValue }) => {
-    setSearchValue(newValue);
-    setSuggestions(getSuggestions(newValue));
+  const onAutorInputChange = (event, { newValue }) => {
+    setAutorSearchValue(newValue);
+    setAutorSuggestions(getAutorSuggestions(newValue));
   };
 
   // Configuração do Autosuggest
-  const inputProps = {
+  const autorInputProps = {
     placeholder: `Pesquisar por Autor`,
-    value: searchValue,
-    onChange: onInputChange,
+    value: autorSearchValue,
+    onChange: onAutorInputChange,
   };
 
   useEffect(() => {
     setStartIndex(0);
-  }, [searchValue]);
+  }, [autorSearchValue]);
   
 
   return (
@@ -210,13 +210,13 @@ export default function TableAutorAno() {
         <div className='row justify-content-between align-items-center my-1'>
           <div className='col autosuggest-container'>
           <Autosuggest
-              suggestions={suggestions}
-              onSuggestionsFetchRequested={({ value }) => setSuggestions(getSuggestions(value))}
-              onSuggestionsClearRequested={() => setSuggestions([])}
-              onSuggestionSelected={onSuggestionSelected}
+              suggestions={autorSuggestions}
+              onSuggestionsFetchRequested={({ value }) => setAutorSuggestions(getAutorSuggestions(value))}
+              onSuggestionsClearRequested={() => setAutorSuggestions([])}
+              onSuggestionSelected={onAutorSuggestionSelected}
               getSuggestionValue={(suggestion) => suggestion.Autor}
-              renderSuggestion={renderSuggestion}
-              inputProps={inputProps}
+              renderSuggestion={renderAutorSuggestion}
+              inputProps={autorInputProps}
               containerProps={{
                 className: 'autosuggest-suggestions-container'
               }}
@@ -280,10 +280,13 @@ export default function TableAutorAno() {
         </tr>
       ))}
     <tr>
-      <td colSpan="1"></td>
-      <td className='fw-bold'>Valor total&nbsp;<i className='mdi mdi-help-circle-outline' title="Valor total obtido pela soma dos valores das emendas listadas na tabela"></i></td>
-      <td className='fw-bold'>3.287.000</td>
-    </tr>
+      <td colSpan="2"></td>
+         <td className="fw-bold">
+            Valor total&nbsp;
+            <i className="mdi mdi-help-circle-outline" title="Valor total obtido pela soma dos valores das emendas listadas na tabela"></i>
+          </td>
+          <td className="fw-bold">{resumo[0]?.valor_total_processos}</td>
+          </tr>
   </tbody>
 </table>
 <div>

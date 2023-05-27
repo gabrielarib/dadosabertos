@@ -10,8 +10,8 @@ export default function TableEstadoAutor() {
   const [processos, setProcessos] = useState([]);
   const [filteredProcessos, setFilteredProcessos] = useState([]);
   const [startIndex, setStartIndex] = useState(0);
-  const [suggestions, setSuggestions] = useState([]);
-  const [searchValue, setSearchValue] = useState('');
+  const [estadoSuggestions, setEstadoSuggestions] = useState([]);
+  const [estadoSearchValue, setEstadoSearchValue] = useState('');
   const [valorOrder, setValorOrder] = useState('asc');
   const [quantidadeOrder, setQuantidadeOrder] = useState('asc');
   const [autorOrder, setEstadoOrder] = useState('asc');
@@ -53,10 +53,11 @@ const handlePrevious = () => {
 };
   
 
+
   const handleReset = () => {
     setFilteredProcessos(processos);
-    setSearchValue('');
-    setSuggestions([]);
+    setEstadoSearchValue('');
+    setEstadoSuggestions([]);
     setValorOrder('asc'); // Redefine a direção da ordenação para ascendente
   };
   
@@ -85,7 +86,7 @@ const handlePrevious = () => {
   }, []);
 
   // Define as sugestões para o campo de busca
-  const getSuggestions = (value) => {
+  const getEstadoSuggestions = (value) => {
     const inputValue = value.trim().toLowerCase();
     const inputLength = inputValue.length;
 
@@ -95,18 +96,19 @@ const handlePrevious = () => {
   };
 
   // Renderiza as sugestões de busca
-  const renderSuggestion = (suggestion) => (
+  const renderEstadoSuggestion = (suggestion) => (
     <div>
       {suggestion.Estado}
     </div>
   );
 
   // Define a ação a ser tomada quando o usuário seleciona uma sugestão
-  const onSuggestionSelected = (event, { suggestionValue }) => {
-    setSearchValue(suggestionValue);
+  const onEstadoSuggestionSelected = (event, { suggestionValue }) => {
+    setEstadoSearchValue(suggestionValue);
     setFilteredProcessos(processos.filter(processo => processo.Estado === suggestionValue));
     setValorOrder('asc'); // Redefine a direção da ordenação ao selecionar uma sugestão
   };
+
 
   const handleSortByValor = () => {
     const sortedProcessos = [...filteredProcessos];
@@ -182,21 +184,21 @@ const handlePrevious = () => {
 
 
   // Define o valor do campo de busca quando o usuário digita
-  const onInputChange = (event, { newValue }) => {
-    setSearchValue(newValue);
-    setSuggestions(getSuggestions(newValue));
+  const onEstadoInputChange = (event, { newValue }) => {
+    setEstadoSearchValue(newValue);
+    setEstadoSuggestions(getEstadoSuggestions(newValue));
   };
 
   // Configuração do Autosuggest
-  const inputProps = {
+  const estadoInputProps = {
     placeholder: `Pesquisar por Estado`,
-    value: searchValue,
-    onChange: onInputChange,
+    value: estadoSearchValue,
+    onChange: onEstadoInputChange,
   };
 
   useEffect(() => {
     setStartIndex(0);
-  }, [searchValue]);
+  }, [estadoSearchValue]);
   
 
   return (
@@ -209,13 +211,13 @@ const handlePrevious = () => {
         <div className='row justify-content-between align-items-center my-1'>
           <div className='col autosuggest-container'>
           <Autosuggest
-              suggestions={suggestions}
-              onSuggestionsFetchRequested={({ value }) => setSuggestions(getSuggestions(value))}
-              onSuggestionsClearRequested={() => setSuggestions([])}
-              onSuggestionSelected={onSuggestionSelected}
+              suggestions={estadoSuggestions}
+              onSuggestionsFetchRequested={({ value }) => setEstadoSuggestions(getEstadoSuggestions(value))}
+              onSuggestionsClearRequested={() => setEstadoSuggestions([])}
+              onSuggestionSelected={onEstadoSuggestionSelected}
               getSuggestionValue={(suggestion) => suggestion.Estado}
-              renderSuggestion={renderSuggestion}
-              inputProps={inputProps}
+              renderSuggestion={renderEstadoSuggestion}
+              inputProps={estadoInputProps}
               containerProps={{
                 className: 'autosuggest-suggestions-container'
               }}
@@ -278,11 +280,14 @@ const handlePrevious = () => {
           <td>{processo.valor_total_processos}</td>
         </tr>
       ))}
-    <tr>
-      <td colSpan="1"></td>
-      <td className='fw-bold'>Valor total&nbsp;<i className='mdi mdi-help-circle-outline' title="Valor total obtido pela soma dos valores das emendas listadas na tabela"></i></td>
-      <td className='fw-bold'>3.287.000</td>
-    </tr>
+     <tr>
+      <td colSpan="2"></td>
+         <td className="fw-bold">
+            Valor total&nbsp;
+            <i className="mdi mdi-help-circle-outline" title="Valor total obtido pela soma dos valores das emendas listadas na tabela"></i>
+          </td>
+          <td className="fw-bold">{resumo[0]?.valor_total_processos}</td>
+          </tr>
   </tbody>
 </table>
 <div>

@@ -9,8 +9,8 @@ export default function TableSimples({ campo }) {
   const [processos, setProcessos] = useState([]);
   const [filteredProcessos, setFilteredProcessos] = useState([]);
   const [startIndex, setStartIndex] = useState(0);
-  const [suggestions, setSuggestions] = useState([]);
-  const [searchValue, setSearchValue] = useState('');
+  const [campoSuggestions, setCampoSuggestions] = useState([]);
+  const [campoSearchValue, setCampoSearchValue] = useState('');
   const [valorOrder, setValorOrder] = useState('asc');
   const [quantidadeOrder, setQuantidadeOrder] = useState('asc');
   const [campoOrder, setCampoOrder] = useState('asc');
@@ -20,7 +20,6 @@ export default function TableSimples({ campo }) {
   const [processosPorPagina, setProcessosPorPagina] = useState(3);
   const totalPages = Math.ceil(filteredProcessos.length / processosPorPagina);
   const currentPage = Math.floor(startIndex / processosPorPagina) + 1;
-
 
   const handleChangeProcessosPorPagina = (event) => {
     const value = parseInt(event.target.value);
@@ -41,7 +40,6 @@ export default function TableSimples({ campo }) {
     }
   };
   
-
   const handlePrevious = () => {
     const previousIndex = startIndex - processosPorPagina;
     if (previousIndex >= 0) {
@@ -50,11 +48,10 @@ export default function TableSimples({ campo }) {
     }
   };
   
-
   const handleReset = () => {
     setFilteredProcessos(processos);
-    setSearchValue('');
-    setSuggestions([]);
+    setCampoSearchValue('');
+    setCampoSuggestions([]);
     setValorOrder('asc');
   };
 
@@ -81,8 +78,7 @@ export default function TableSimples({ campo }) {
       });
   }, []);
   
-
-  const getSuggestions = value => {
+  const getCampoSuggestions = value => {
     const inputValue = value.trim().toLowerCase();
     const inputLength = inputValue.length;
 
@@ -91,10 +87,10 @@ export default function TableSimples({ campo }) {
       : processos.filter(processo => processo[campo].toLowerCase().slice(0, inputLength) === inputValue);
   };
 
-  const renderSuggestion = suggestion => <div>{suggestion[campo]}</div>;
+  const renderCampoSuggestion = suggestion => <div>{suggestion[campo]}</div>;
 
-  const onSuggestionSelected = (event, { suggestionValue }) => {
-    setSearchValue(suggestionValue);
+  const onCampoSuggestionSelected = (event, { suggestionValue }) => {
+    setCampoSearchValue(suggestionValue);
     setFilteredProcessos(processos.filter(processo => processo[campo] === suggestionValue));
     setValorOrder('asc');
   };
@@ -149,20 +145,20 @@ export default function TableSimples({ campo }) {
     setFilteredProcessos(sortedProcessos);
   };
 
-  const onInputChange = (event, { newValue }) => {
-    setSearchValue(newValue);
-    setSuggestions(getSuggestions(newValue));
+  const onCampoInputChange = (event, { newValue }) => {
+    setCampoSearchValue(newValue);
+    setCampoSuggestions(getCampoSuggestions(newValue));
   };
 
-  const inputProps = {
+  const campoInputProps = {
     placeholder: `Pesquisar por ${campo}`,
-    value: searchValue,
-    onChange: onInputChange,
+    value: campoSearchValue,
+    onChange: onCampoInputChange,
   };
 
   useEffect(() => {
     setStartIndex(0);
-  }, [searchValue]);
+  }, [campoSearchValue]);
 
   return (
     <div className="container-airbnb row">
@@ -173,13 +169,13 @@ export default function TableSimples({ campo }) {
         <div className="row justify-content-between align-items-center my-1">
           <div className="col autosuggest-container">
             <Autosuggest
-              suggestions={suggestions}
-              onSuggestionsFetchRequested={({ value }) => setSuggestions(getSuggestions(value))}
-              onSuggestionsClearRequested={() => setSuggestions([])}
-              onSuggestionSelected={onSuggestionSelected}
+              suggestions={campoSuggestions}
+              onSuggestionsFetchRequested={({ value }) => setCampoSuggestions(getCampoSuggestions(value))}
+              onSuggestionsClearRequested={() => setCampoSuggestions([])}
+              onSuggestionSelected={onCampoSuggestionSelected}
               getSuggestionValue={suggestion => suggestion[campo]}
-              renderSuggestion={renderSuggestion}
-              inputProps={inputProps}
+              renderSuggestion={renderCampoSuggestion}
+              inputProps={campoInputProps}
               containerProps={{
                 className: 'autosuggest-suggestions-container',
               }}
@@ -284,7 +280,7 @@ export default function TableSimples({ campo }) {
             <YAxis domain={[0, 'dataMax + 6000000']} />
             <Tooltip />
             <Legend />
-            <Bar dataKey="valor_total_processos" fill="#82ca9d" />
+            <Bar dataKey="valor_total_processos" fill="#8884d8" />
           </BarChart>
         )}
       </Modal.Body>
