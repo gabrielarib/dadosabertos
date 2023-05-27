@@ -6,7 +6,7 @@ import Autosuggest from 'react-autosuggest';
 import { Modal, Button } from 'react-bootstrap';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
-export default function TableAutorAno() {
+export default function TableEstadoAutor() {
   const [processos, setProcessos] = useState([]);
   const [filteredProcessos, setFilteredProcessos] = useState([]);
   const [startIndex, setStartIndex] = useState(0);
@@ -14,8 +14,8 @@ export default function TableAutorAno() {
   const [searchValue, setSearchValue] = useState('');
   const [valorOrder, setValorOrder] = useState('asc');
   const [quantidadeOrder, setQuantidadeOrder] = useState('asc');
-  const [autorOrder, setAutorOrder] = useState('asc');
-  const [anoOrder, setAnoOrder] = useState('asc');
+  const [autorOrder, setEstadoOrder] = useState('asc');
+  const [anoOrder, setAutorOrder] = useState('asc');
   const [showModal, setShowModal] = useState(false);
   const [selectedChart, setSelectedChart] = useState('');
   const [resumo, setResumo] = useState([]);
@@ -23,35 +23,35 @@ export default function TableAutorAno() {
   const totalPages = Math.ceil(filteredProcessos.length / processosPorPagina);
   const currentPage = Math.floor(startIndex / processosPorPagina) + 1;
 
-
   const handleChangeProcessosPorPagina = (event) => {
     const value = parseInt(event.target.value);
     setProcessosPorPagina(value);
     setStartIndex(0);
   };
 
-  const openModal = (chartType) => {
-    setSelectedChart(chartType);
-    setShowModal(true);
-  };  
+const openModal = (chartType) => {
+  setSelectedChart(chartType);
+  setShowModal(true);
+};
 
 
-  const handleNext = () => {
-    const nextIndex = startIndex + processosPorPagina;
-    if (nextIndex < processos.length) {
-      setStartIndex(nextIndex);
-      setValorOrder('asc');
-    }
-  };
+const handleNext = () => {
+  const nextIndex = startIndex + processosPorPagina;
+  if (nextIndex < processos.length) {
+    setStartIndex(nextIndex);
+    setValorOrder('asc');
+  }
+};
+
+
+const handlePrevious = () => {
+  const previousIndex = startIndex - processosPorPagina;
+  if (previousIndex >= 0) {
+    setStartIndex(previousIndex);
+    setValorOrder('asc');
+  }
+};
   
-  
-  const handlePrevious = () => {
-    const previousIndex = startIndex - processosPorPagina;
-    if (previousIndex >= 0) {
-      setStartIndex(previousIndex);
-      setValorOrder('asc');
-    }
-  };
 
   const handleReset = () => {
     setFilteredProcessos(processos);
@@ -62,7 +62,7 @@ export default function TableAutorAno() {
   
 
   useEffect(() => {
-    axios.get(`http://localhost:3000/processo/processoPorAutorAno`)
+    axios.get(`http://localhost:3000/processo/processoPorEstadoAutor`)
 
       .then(response => {
         setProcessos(response.data);
@@ -73,7 +73,6 @@ export default function TableAutorAno() {
       });
   }, []);
 
-  
   useEffect(() => {
     axios
       .get('http://localhost:3000/processo/processoResumo')
@@ -91,21 +90,21 @@ export default function TableAutorAno() {
     const inputLength = inputValue.length;
 
     return inputLength === 0 ? [] : processos.filter(processo =>
-      processo.Autor.toLowerCase().slice(0, inputLength) === inputValue
+      processo.Estado.toLowerCase().slice(0, inputLength) === inputValue
     );
   };
 
   // Renderiza as sugestões de busca
   const renderSuggestion = (suggestion) => (
     <div>
-      {suggestion.Autor}
+      {suggestion.Estado}
     </div>
   );
 
   // Define a ação a ser tomada quando o usuário seleciona uma sugestão
   const onSuggestionSelected = (event, { suggestionValue }) => {
     setSearchValue(suggestionValue);
-    setFilteredProcessos(processos.filter(processo => processo.Autor === suggestionValue));
+    setFilteredProcessos(processos.filter(processo => processo.Estado === suggestionValue));
     setValorOrder('asc'); // Redefine a direção da ordenação ao selecionar uma sugestão
   };
 
@@ -137,10 +136,32 @@ export default function TableAutorAno() {
     setFilteredProcessos(sortedProcessos);
   };
   
-  const handleSortByAutor = () => {
+  const handleSortByEstado = () => {
     const sortedProcessos = [...filteredProcessos];
   
     if (autorOrder === 'asc') {
+      sortedProcessos.sort((a, b) => {
+        if (a.Estado < b.Estado) return -1;
+        if (a.Estado > b.Estado) return 1;
+        return 0;
+      });
+      setEstadoOrder('desc');
+    } else {
+      sortedProcessos.sort((a, b) => {
+        if (a.Estado > b.Estado) return -1;
+        if (a.Estado < b.Estado) return 1;
+        return 0;
+      });
+      setEstadoOrder('asc');
+    }
+  
+    setFilteredProcessos(sortedProcessos);
+  };
+
+  const handleSortByAutor = () => {
+    const sortedProcessos = [...filteredProcessos];
+  
+    if (anoOrder === 'asc') {
       sortedProcessos.sort((a, b) => {
         if (a.Autor < b.Autor) return -1;
         if (a.Autor > b.Autor) return 1;
@@ -159,28 +180,6 @@ export default function TableAutorAno() {
     setFilteredProcessos(sortedProcessos);
   };
 
-  const handleSortByAno = () => {
-    const sortedProcessos = [...filteredProcessos];
-  
-    if (anoOrder === 'asc') {
-      sortedProcessos.sort((a, b) => {
-        if (a.Ano < b.Ano) return -1;
-        if (a.Ano > b.Ano) return 1;
-        return 0;
-      });
-      setAnoOrder('desc');
-    } else {
-      sortedProcessos.sort((a, b) => {
-        if (a.Ano > b.Ano) return -1;
-        if (a.Ano < b.Ano) return 1;
-        return 0;
-      });
-      setAnoOrder('asc');
-    }
-  
-    setFilteredProcessos(sortedProcessos);
-  };
-
 
   // Define o valor do campo de busca quando o usuário digita
   const onInputChange = (event, { newValue }) => {
@@ -190,7 +189,7 @@ export default function TableAutorAno() {
 
   // Configuração do Autosuggest
   const inputProps = {
-    placeholder: `Pesquisar por Autor`,
+    placeholder: `Pesquisar por Estado`,
     value: searchValue,
     onChange: onInputChange,
   };
@@ -205,7 +204,7 @@ export default function TableAutorAno() {
 
       <div className='container'>
         <div className='row'>
-          <span className='fs-4 fw-bold'>{`Por Autor/Ano`}</span>
+          <span className='fs-4 fw-bold'>{`Por Estado/Autor`}</span>
         </div>
         <div className='row justify-content-between align-items-center my-1'>
           <div className='col autosuggest-container'>
@@ -214,7 +213,7 @@ export default function TableAutorAno() {
               onSuggestionsFetchRequested={({ value }) => setSuggestions(getSuggestions(value))}
               onSuggestionsClearRequested={() => setSuggestions([])}
               onSuggestionSelected={onSuggestionSelected}
-              getSuggestionValue={(suggestion) => suggestion.Autor}
+              getSuggestionValue={(suggestion) => suggestion.Estado}
               renderSuggestion={renderSuggestion}
               inputProps={inputProps}
               containerProps={{
@@ -245,15 +244,15 @@ export default function TableAutorAno() {
   <table className="table table-light table-striped border">
   <thead>
     <tr>
-      <th scope="col">Autor{' '}
+      <th scope="col">Estado{' '}
         <i
           className={`mdi mdi-chevron-${autorOrder === 'asc' ? 'down' : 'up'}`}
-          onClick={handleSortByAutor}
+          onClick={handleSortByEstado}
         ></i></th>
-      <th scope="col">Ano{' '}
+      <th scope="col">Autor{' '}
         <i
           className={`mdi mdi-chevron-${anoOrder === 'asc' ? 'down' : 'up'}`}
-          onClick={handleSortByAno}
+          onClick={handleSortByAutor}
         ></i>
       </th>
       <th scope="col">Quantidade
@@ -271,10 +270,10 @@ export default function TableAutorAno() {
     </tr>
   </thead>
   <tbody>
-      {filteredProcessos.slice(startIndex, startIndex + processosPorPagina).map((processo) => (
-          <tr key={processo.numero}>
+    {filteredProcessos.slice(startIndex, startIndex + processosPorPagina).map((processo) => (
+         <tr key={processo.numero}>
+          <td>{processo.Estado}</td>
           <td>{processo.Autor}</td>
-          <td>{processo.Ano}</td>
           <td>{processo.quantidade_processos}</td>
           <td>{processo.valor_total_processos}</td>
         </tr>
@@ -294,7 +293,7 @@ export default function TableAutorAno() {
     Próximo
   </button>
 </div>
-      <div>
+<div>
         <div>
           <button onClick={() => openModal('quantidade_processos')}>Abrir Gráfico de Quantidade</button>
           <button onClick={() => openModal('valor_total_processos')}>Abrir Gráfico de Valor</button>
@@ -331,7 +330,6 @@ export default function TableAutorAno() {
         </Modal>
 
       </div>
-
 
 
     </div>

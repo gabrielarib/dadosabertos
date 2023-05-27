@@ -6,9 +6,8 @@ import Filtro from './components/Filtro';
 import Footer from './components/Footer';
 import Navbar from './components/Navbar'
 import TableAutorAno from './components/TableAutorAno';
-import TableOrgão from './components/TableOrgão';
 import TableResumo from './components/TableResumo';
-import TableMunicipioAutor from './components/TableMunicipioAutor';
+import TableEstadoAutor from './components/TableEstadoAutor';
 import Table from './components/Table';
 import TableSimples from './components/TableSimples';
 import Title from './components/Title'
@@ -59,17 +58,15 @@ function App() {
 
       <div className='row my-5 border-bottom'>
         <div className='col-6'><TableSimples campo="ano"/></div>
-        <div className='col-6'>
-          <TableAutorAno/>
-        </div>
+        <div className='col-6'><TableSimples campo="orgao"/></div>
       </div>
 
       <div className='row my-5 border-bottom'>
         <div className='col-6'>
-          <TableOrgão/>
+          <TableAutorAno/>
         </div>
         <div className='col-6'>
-          <TableMunicipioAutor/>
+          <TableEstadoAutor/>
         </div>
       </div>
 
