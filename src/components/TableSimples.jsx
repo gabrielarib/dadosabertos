@@ -232,7 +232,7 @@ export default function TableSimples({ campo }) {
             <tr key={processo.numero}>
               <td>{processo[campo]}</td>
               <td>{processo.quantidade_processos}</td>
-              <td>{processo.valor_total_processos}</td>
+              <td>{processo.valor_total_processos.toLocaleString('pt-BR')}</td>
             </tr>
           ))}
           <tr>

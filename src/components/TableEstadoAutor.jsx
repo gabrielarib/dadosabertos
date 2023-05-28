@@ -12,22 +12,42 @@ export default function TableEstadoAutor() {
   const [startIndex, setStartIndex] = useState(0);
   const [estadoSuggestions, setEstadoSuggestions] = useState([]);
   const [estadoSearchValue, setEstadoSearchValue] = useState('');
+  const [autorSuggestions, setAutorSuggestions] = useState([]);
+  const [autorSearchValue, setAutorSearchValue] = useState('');
   const [valorOrder, setValorOrder] = useState('asc');
   const [quantidadeOrder, setQuantidadeOrder] = useState('asc');
-  const [autorOrder, setEstadoOrder] = useState('asc');
-  const [anoOrder, setAutorOrder] = useState('asc');
+  const [autorOrder, setAutorOrder] = useState('asc');
+  const [estadoOrder, setEstadoOrder] = useState('asc');
   const [showModal, setShowModal] = useState(false);
   const [selectedChart, setSelectedChart] = useState('');
   const [resumo, setResumo] = useState([]);
   const [processosPorPagina, setProcessosPorPagina] = useState(3);
   const totalPages = Math.ceil(filteredProcessos.length / processosPorPagina);
   const currentPage = Math.floor(startIndex / processosPorPagina) + 1;
+  const [searchBy, setSearchBy] = useState(''); // Estado inicial vazio
+  const [searchValue, setSearchValue] = useState(''); // Estado inicial vazio
+
+  useEffect(() => {
+  let filtered = processos;
+
+  if (searchBy === 'estado' && searchValue !== '') {
+    filtered = filtered.filter((processo) => processo.Estado === searchValue);
+  } else if (searchBy === 'autor' && searchValue !== '') {
+    filtered = filtered.filter((processo) => processo.Autor === searchValue);
+  }
+
+  setFilteredProcessos(filtered);
+}, [processos, searchBy, searchValue]);
+
 
   const handleChangeProcessosPorPagina = (event) => {
     const value = parseInt(event.target.value);
     setProcessosPorPagina(value);
     setStartIndex(0);
+    setSearchBy('');
+    setSearchValue('');
   };
+  
 
 const openModal = (chartType) => {
   setSelectedChart(chartType);
@@ -54,12 +74,15 @@ const handlePrevious = () => {
   
 
 
-  const handleReset = () => {
-    setFilteredProcessos(processos);
-    setEstadoSearchValue('');
-    setEstadoSuggestions([]);
-    setValorOrder('asc'); // Redefine a direção da ordenação para ascendente
-  };
+const handleReset = () => {
+  setFilteredProcessos(processos);
+  setEstadoSuggestions([]);
+  setAutorSuggestions([]);
+  setAutorSearchValue('');
+  setEstadoSearchValue('');
+  setValorOrder('asc'); // Redefine a direção da ordenação para ascendente
+};
+
   
 
   useEffect(() => {
@@ -94,6 +117,14 @@ const handlePrevious = () => {
       processo.Estado.toLowerCase().slice(0, inputLength) === inputValue
     );
   };
+  const getAutorSuggestions = (value) => {
+    const inputValue = value.trim().toLowerCase();
+    const inputLength = inputValue.length;
+
+    return inputLength === 0 ? [] : processos.filter(processo =>
+      processo.Autor.toLowerCase().slice(0, inputLength) === inputValue
+    );
+  };
 
   // Renderiza as sugestões de busca
   const renderEstadoSuggestion = (suggestion) => (
@@ -101,11 +132,21 @@ const handlePrevious = () => {
       {suggestion.Estado}
     </div>
   );
+  const renderAutorSuggestion = (suggestion) => (
+    <div>
+      {suggestion.Autor}
+    </div>
+  );
 
   // Define a ação a ser tomada quando o usuário seleciona uma sugestão
   const onEstadoSuggestionSelected = (event, { suggestionValue }) => {
     setEstadoSearchValue(suggestionValue);
     setFilteredProcessos(processos.filter(processo => processo.Estado === suggestionValue));
+    setValorOrder('asc'); // Redefine a direção da ordenação ao selecionar uma sugestão
+  };
+  const onAutorSuggestionSelected = (event, { suggestionValue }) => {
+    setAutorSearchValue(suggestionValue);
+    setFilteredProcessos(processos.filter(processo => processo.Autor === suggestionValue));
     setValorOrder('asc'); // Redefine a direção da ordenação ao selecionar uma sugestão
   };
 
@@ -141,7 +182,7 @@ const handlePrevious = () => {
   const handleSortByEstado = () => {
     const sortedProcessos = [...filteredProcessos];
   
-    if (autorOrder === 'asc') {
+    if (estadoOrder === 'asc') {
       sortedProcessos.sort((a, b) => {
         if (a.Estado < b.Estado) return -1;
         if (a.Estado > b.Estado) return 1;
@@ -163,7 +204,7 @@ const handlePrevious = () => {
   const handleSortByAutor = () => {
     const sortedProcessos = [...filteredProcessos];
   
-    if (anoOrder === 'asc') {
+    if (autorOrder === 'asc') {
       sortedProcessos.sort((a, b) => {
         if (a.Autor < b.Autor) return -1;
         if (a.Autor > b.Autor) return 1;
@@ -188,6 +229,10 @@ const handlePrevious = () => {
     setEstadoSearchValue(newValue);
     setEstadoSuggestions(getEstadoSuggestions(newValue));
   };
+  const onAutorInputChange = (event, { newValue }) => {
+    setAutorSearchValue(newValue);
+    setAutorSuggestions(getEstadoSuggestions(newValue));
+  };
 
   // Configuração do Autosuggest
   const estadoInputProps = {
@@ -195,10 +240,18 @@ const handlePrevious = () => {
     value: estadoSearchValue,
     onChange: onEstadoInputChange,
   };
+  const autorInputProps = {
+    placeholder: `Pesquisar por Autor`,
+    value: autorSearchValue,
+    onChange: onAutorInputChange,
+  };
 
   useEffect(() => {
     setStartIndex(0);
   }, [estadoSearchValue]);
+  useEffect(() => {
+    setStartIndex(0);
+  }, [autorSearchValue]);
   
 
   return (
@@ -208,21 +261,42 @@ const handlePrevious = () => {
         <div className='row'>
           <span className='fs-4 fw-bold'>{`Por Estado/Autor`}</span>
         </div>
-        <div className='row justify-content-between align-items-center my-1'>
-          <div className='col autosuggest-container'>
-          <Autosuggest
-              suggestions={estadoSuggestions}
-              onSuggestionsFetchRequested={({ value }) => setEstadoSuggestions(getEstadoSuggestions(value))}
-              onSuggestionsClearRequested={() => setEstadoSuggestions([])}
-              onSuggestionSelected={onEstadoSuggestionSelected}
-              getSuggestionValue={(suggestion) => suggestion.Estado}
-              renderSuggestion={renderEstadoSuggestion}
-              inputProps={estadoInputProps}
-              containerProps={{
-                className: 'autosuggest-suggestions-container'
-              }}
-            />
-          </div>
+        <div className="row justify-content-between align-items-center my-1">
+          <div className="col">
+            <select value={searchBy} onChange={(e) => setSearchBy(e.target.value)}>
+              <option value="">Pesquisar por</option>
+              <option value="autor">Autor</option>
+              <option value="estado">Estado</option>
+            </select>
+            {searchBy === 'estado' && (
+              <Autosuggest
+                suggestions={estadoSuggestions}
+                onSuggestionsFetchRequested={({ value }) => setEstadoSuggestions(getEstadoSuggestions(value))}
+                onSuggestionsClearRequested={() => setEstadoSuggestions([])}
+                onSuggestionSelected={onEstadoSuggestionSelected}
+                getSuggestionValue={(suggestion) => suggestion.Estado}
+                renderSuggestion={renderEstadoSuggestion}
+                inputProps={estadoInputProps}
+                containerProps={{
+                  className: 'autosuggest-suggestions-container',
+                }}
+              />
+            )}
+            {searchBy === 'autor' && (
+              <Autosuggest
+                suggestions={autorSuggestions}
+                onSuggestionsFetchRequested={({ value }) => setAutorSuggestions(getAutorSuggestions(value))}
+                onSuggestionsClearRequested={() => setAutorSuggestions([])}
+                onSuggestionSelected={onAutorSuggestionSelected}
+                getSuggestionValue={(suggestion) => suggestion.Autor}
+                renderSuggestion={renderAutorSuggestion}
+                inputProps={autorInputProps}
+                containerProps={{
+                  className: 'autosuggest-suggestions-container',
+                }}
+              />
+            )}
+            </div>
           <div className='col'>
           <button type="button" className="btn btn-light border-dark" onClick={handleReset}>
               <i className='mdi mdi-backspace'></i>
@@ -248,12 +322,12 @@ const handlePrevious = () => {
     <tr>
       <th scope="col">Estado{' '}
         <i
-          className={`mdi mdi-chevron-${autorOrder === 'asc' ? 'down' : 'up'}`}
+          className={`mdi mdi-chevron-${estadoOrder === 'asc' ? 'down' : 'up'}`}
           onClick={handleSortByEstado}
         ></i></th>
       <th scope="col">Autor{' '}
         <i
-          className={`mdi mdi-chevron-${anoOrder === 'asc' ? 'down' : 'up'}`}
+          className={`mdi mdi-chevron-${autorOrder === 'asc' ? 'down' : 'up'}`}
           onClick={handleSortByAutor}
         ></i>
       </th>
@@ -277,7 +351,7 @@ const handlePrevious = () => {
           <td>{processo.Estado}</td>
           <td>{processo.Autor}</td>
           <td>{processo.quantidade_processos}</td>
-          <td>{processo.valor_total_processos}</td>
+          <td>{processo.valor_total_processos.toLocaleString('pt-BR')}</td>
         </tr>
       ))}
      <tr>
