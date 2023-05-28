@@ -347,7 +347,7 @@ useEffect(() => {
         <td>{processo.Autor}</td>
         <td>{processo.Tipo_autor}</td>
         <td>{processo.Nome_beneficiario}</td>
-        <td>{processo.Uf_Beneficiario}</td>
+        <td>{processo.Estado}</td>
         <td>{processo.Nome_orgao}</td>
         <td>{processo.Cod_orgao}</td>
         <td>{processo.Data_de_cadastro}</td>
