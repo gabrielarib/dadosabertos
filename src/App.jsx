@@ -14,6 +14,7 @@ import Title from './components/Title'
 import { useEffect, useState } from 'react';
 
 import { processos } from '../backend/dados';
+import AutorTable from './components/AutorTable';
 
 function App() {
   const [allHouses, setAllHouses] = useState(processos);
@@ -51,6 +52,10 @@ function App() {
       <Title/>
       <TableResumo/>
 
+      <div className='my-5 border-bottom'>
+        <Table/>
+      </div>
+
       <div className='row my-5 border-bottom'>
         <div className='col-6'><TableSimples campo="estado"/></div>
         <div className='col-6'><TableSimples campo="autor"/></div>
@@ -70,9 +75,7 @@ function App() {
         </div>
       </div>
 
-      <div className='my-5 border-bottom'>
-        <Table/>
-      </div>
+      
       
       <Footer/>
     </div>

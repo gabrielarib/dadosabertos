@@ -37,6 +37,14 @@ export default function TableResumo() {
               Quantidade de Estados{' '}
               <i className="mdi mdi-help-circle-outline" title="O estado onde o beneficiário se encontra"></i>
             </th>
+            <th scope="col">
+              Quantidade de Beneficiarios{' '}
+              <i className="mdi mdi-help-circle-outline" title="O estado onde o beneficiário se encontra"></i>
+            </th>
+            <th scope="col">
+              Quantidade de Anos{' '}
+              <i className="mdi mdi-help-circle-outline" title="O estado onde o beneficiário se encontra"></i>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -45,6 +53,8 @@ export default function TableResumo() {
               <td>{processo.quantidade_processos}</td>
               <td>{processo.valor_total_processos}</td>
               <td>{processo.quantidade_estados}</td>
+              <td>{processo.quantidade_beneficiarios}</td>
+              <td>{processo.Anos}</td>
             </tr>
           ))}
         </tbody>

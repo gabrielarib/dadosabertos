@@ -21,6 +21,20 @@ export default function TableSimples({ campo }) {
   const totalPages = Math.ceil(filteredProcessos.length / processosPorPagina);
   const currentPage = Math.floor(startIndex / processosPorPagina) + 1;
 
+  const isCampoAno = campo === 'ano';
+
+  const transformProcessoAnoToString = (processos) => {
+    if (isCampoAno) {
+      return processos.map((processo) => {
+        return {
+          ...processo,
+          ano: processo.ano.toString()
+        };
+      });
+    }
+    return processos;
+  };
+
   const handleChangeProcessosPorPagina = (event) => {
     const value = parseInt(event.target.value);
     setProcessosPorPagina(value);
@@ -59,8 +73,9 @@ export default function TableSimples({ campo }) {
     axios
       .get(`http://localhost:3000/processo/processoPor${campo}`)
       .then(response => {
-        setProcessos(response.data);
-        setFilteredProcessos(response.data);
+        const transformedProcessos = transformProcessoAnoToString(response.data);
+        setProcessos(transformedProcessos);
+        setFilteredProcessos(transformedProcessos);
       })
       .catch(error => {
         console.log(error);
@@ -235,21 +250,13 @@ export default function TableSimples({ campo }) {
               <td>{processo.valor_total_processos.toLocaleString('pt-BR')}</td>
             </tr>
           ))}
-          <tr>
-            <td colSpan="1"></td>
-            <td className="fw-bold">
-              Valor total&nbsp;
-              <i className="mdi mdi-help-circle-outline" title="Valor total obtido pela soma dos valores das emendas listadas na tabela"></i>
-            </td>
-            <td className="fw-bold">{resumo[0]?.valor_total_processos}</td>
-          </tr>
         </tbody>
       </table>
       <div>
         <button onClick={handlePrevious} disabled={startIndex === 0}>
           Anterior
         </button>
-        <button onClick={handleNext} disabled={startIndex + 3 >= processos.length}>
+        <button onClick={handleNext} disabled={startIndex + processosPorPagina >= processos.length}>
           Próximo
         </button>
       </div>

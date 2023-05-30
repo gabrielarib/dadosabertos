@@ -354,21 +354,13 @@ const handleReset = () => {
           <td>{processo.valor_total_processos.toLocaleString('pt-BR')}</td>
         </tr>
       ))}
-     <tr>
-      <td colSpan="2"></td>
-         <td className="fw-bold">
-            Valor total&nbsp;
-            <i className="mdi mdi-help-circle-outline" title="Valor total obtido pela soma dos valores das emendas listadas na tabela"></i>
-          </td>
-          <td className="fw-bold">{resumo[0]?.valor_total_processos}</td>
-          </tr>
   </tbody>
 </table>
 <div>
   <button onClick={handlePrevious} disabled={startIndex === 0}>
     Anterior
   </button>
-  <button onClick={handleNext} disabled={startIndex + 3 >= processos.length}>
+  <button onClick={handleNext} disabled={startIndex + processosPorPagina >= processos.length}>
     Próximo
   </button>
 </div>

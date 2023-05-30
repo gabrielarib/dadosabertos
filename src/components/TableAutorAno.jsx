@@ -10,6 +10,8 @@ export default function TableAutorAno() {
   const [processos, setProcessos] = useState([]);
   const [filteredProcessos, setFilteredProcessos] = useState([]);
   const [startIndex, setStartIndex] = useState(0);
+  const [anoSuggestions, setAnoSuggestions] = useState([]);
+  const [anoSearchValue, setAnoSearchValue] = useState('');
   const [autorSuggestions, setAutorSuggestions] = useState([]);
   const [autorSearchValue, setAutorSearchValue] = useState('');
   const [valorOrder, setValorOrder] = useState('asc');
@@ -22,7 +24,30 @@ export default function TableAutorAno() {
   const [processosPorPagina, setProcessosPorPagina] = useState(3);
   const totalPages = Math.ceil(filteredProcessos.length / processosPorPagina);
   const currentPage = Math.floor(startIndex / processosPorPagina) + 1;
+  const [searchBy, setSearchBy] = useState(''); // Ano inicial vazio
+  const [searchValue, setSearchValue] = useState(''); // Ano inicial vazio
 
+
+  const transformProcessoAnoToString = (processos) => {
+    return processos.map((processo) => {
+      return {
+        ...processo,
+        Ano: processo.Ano.toString()
+      };
+    });
+  };
+  
+  useEffect(() => {
+    let filtered = processos;
+  
+    if (searchBy === 'ano' && searchValue !== '') {
+      filtered = filtered.filter((processo) => processo.Ano === searchValue);
+    } else if (searchBy === 'autor' && searchValue !== '') {
+      filtered = filtered.filter((processo) => processo.Autor === searchValue);
+    }
+  
+    setFilteredProcessos(filtered);
+  }, [processos, searchBy, searchValue]);
 
   const handleChangeProcessosPorPagina = (event) => {
     const value = parseInt(event.target.value);
@@ -55,23 +80,26 @@ export default function TableAutorAno() {
 
   const handleReset = () => {
     setFilteredProcessos(processos);
-    setAutorSearchValue('');
+    setAnoSuggestions([]);
     setAutorSuggestions([]);
+    setAutorSearchValue('');
+    setAnoSearchValue('');
     setValorOrder('asc'); // Redefine a direção da ordenação para ascendente
   };
   
 
   useEffect(() => {
     axios.get(`http://localhost:3000/processo/processoPorAutorAno`)
-
       .then(response => {
-        setProcessos(response.data);
-        setFilteredProcessos(response.data); 
+        const transformedProcessos = transformProcessoAnoToString(response.data);
+        setProcessos(transformedProcessos);
+        setFilteredProcessos(transformedProcessos);
       })
       .catch(error => {
         console.log(error);
       });
   }, []);
+  
 
   
   useEffect(() => {
@@ -94,6 +122,14 @@ export default function TableAutorAno() {
       processo.Autor.toLowerCase().slice(0, inputLength) === inputValue
     );
   };
+  const getAnoSuggestions = (value) => {
+    const inputValue = value.trim().toLowerCase();
+    const inputLength = inputValue.length;
+
+    return inputLength === 0 ? [] : processos.filter(processo =>
+      processo.Ano.toLowerCase().slice(0, inputLength) === inputValue
+    );
+  };
 
   // Renderiza as sugestões de busca
   const renderAutorSuggestion = (suggestion) => (
@@ -101,11 +137,21 @@ export default function TableAutorAno() {
       {suggestion.Autor}
     </div>
   );
+  const renderAnoSuggestion = (suggestion) => (
+    <div>
+      {suggestion.Ano}
+    </div>
+  );
 
   // Define a ação a ser tomada quando o usuário seleciona uma sugestão
   const onAutorSuggestionSelected = (event, { suggestionValue }) => {
     setAutorSearchValue(suggestionValue);
     setFilteredProcessos(processos.filter(processo => processo.Autor === suggestionValue));
+    setValorOrder('asc'); // Redefine a direção da ordenação ao selecionar uma sugestão
+  };
+  const onAnoSuggestionSelected = (event, { suggestionValue }) => {
+    setAnoSearchValue(suggestionValue);
+    setFilteredProcessos(processos.filter(processo => processo.Ano === suggestionValue));
     setValorOrder('asc'); // Redefine a direção da ordenação ao selecionar uma sugestão
   };
 
@@ -187,6 +233,10 @@ export default function TableAutorAno() {
     setAutorSearchValue(newValue);
     setAutorSuggestions(getAutorSuggestions(newValue));
   };
+  const onAnoInputChange = (event, { newValue }) => {
+    setAnoSearchValue(newValue);
+    setAnoSuggestions(getAnoSuggestions(newValue));
+  };
 
   // Configuração do Autosuggest
   const autorInputProps = {
@@ -194,10 +244,18 @@ export default function TableAutorAno() {
     value: autorSearchValue,
     onChange: onAutorInputChange,
   };
+  const anoInputProps = {
+    placeholder: `Pesquisar por Ano`,
+    value: anoSearchValue,
+    onChange: onAnoInputChange,
+  };
 
   useEffect(() => {
     setStartIndex(0);
   }, [autorSearchValue]);
+  useEffect(() => {
+    setStartIndex(0);
+  }, [anoSearchValue]);
   
 
   return (
@@ -207,8 +265,28 @@ export default function TableAutorAno() {
         <div className='row'>
           <span className='fs-4 fw-bold'>{`Por Autor/Ano`}</span>
         </div>
-        <div className='row justify-content-between align-items-center my-1'>
-          <div className='col autosuggest-container'>
+        <div className="row justify-content-between align-items-center my-1">
+          <div className="col">
+            <select value={searchBy} onChange={(e) => setSearchBy(e.target.value)}>
+              <option value="">Pesquisar por</option>
+              <option value="autor">Autor</option>
+              <option value="ano">Ano</option>
+            </select>
+            {searchBy === 'ano' && (
+              <Autosuggest
+                suggestions={anoSuggestions}
+                onSuggestionsFetchRequested={({ value }) => setAnoSuggestions(getAnoSuggestions(value))}
+                onSuggestionsClearRequested={() => setAnoSuggestions([])}
+                onSuggestionSelected={onAnoSuggestionSelected}
+                getSuggestionValue={(suggestion) => suggestion.Ano}
+                renderSuggestion={renderAnoSuggestion}
+                inputProps={anoInputProps}
+                containerProps={{
+                  className: 'autosuggest-suggestions-container',
+                }}
+              />
+            )}
+            {searchBy === 'autor' && (
           <Autosuggest
               suggestions={autorSuggestions}
               onSuggestionsFetchRequested={({ value }) => setAutorSuggestions(getAutorSuggestions(value))}
@@ -221,6 +299,7 @@ export default function TableAutorAno() {
                 className: 'autosuggest-suggestions-container'
               }}
             />
+            )}
           </div>
           <div className='col'>
           <button type="button" className="btn btn-light border-dark" onClick={handleReset}>
@@ -279,21 +358,13 @@ export default function TableAutorAno() {
           <td>{processo.valor_total_processos}</td>
         </tr>
       ))}
-    <tr>
-      <td colSpan="2"></td>
-         <td className="fw-bold">
-            Valor total&nbsp;
-            <i className="mdi mdi-help-circle-outline" title="Valor total obtido pela soma dos valores das emendas listadas na tabela"></i>
-          </td>
-          <td className="fw-bold">{resumo[0]?.valor_total_processos}</td>
-          </tr>
   </tbody>
 </table>
 <div>
   <button onClick={handlePrevious} disabled={startIndex === 0}>
     Anterior
   </button>
-  <button onClick={handleNext} disabled={startIndex + 3 >= processos.length}>
+  <button onClick={handleNext} disabled={startIndex + processosPorPagina >= processos.length}>
     Próximo
   </button>
 </div>
