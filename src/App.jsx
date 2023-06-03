@@ -2,7 +2,6 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap';
 import './App.css';
 import '@mdi/font/css/materialdesignicons.css' 
-import Filtro from './components/Filtro';
 import Footer from './components/Footer';
 import Navbar from './components/Navbar'
 import TableAutorAno from './components/TableAutorAno';
@@ -11,40 +10,25 @@ import TableEstadoAutor from './components/TableEstadoAutor';
 import Table from './components/Table';
 import TableSimples from './components/TableSimples';
 import Title from './components/Title'
-import { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-import { processos } from '../backend/dados';
-import AutorTable from './components/AutorTable';
+import geral from './assets/geral.png';
+import autor from './assets/autor.png';
+import estado from './assets/estado.png';
+import orgao from './assets/orgao.png';
+import ano from './assets/ano.png';
+import autorano from './assets/autorano.png';
+import estadoautor from './assets/estadoautor.png';
 
 function App() {
-  const [allHouses, setAllHouses] = useState(processos);
-  const [filterHouses, setfilterHouses] = useState([]);
-  const [catID, setCatID] = useState(2022);
 
-  useEffect(() => {
-    console.log(allHouses);
-    filterByAno(catID);
-  }, [allHouses])
-
-  useEffect(() => {
-    console.log(filterHouses);
-  }, [filterHouses])
-
-  useEffect(() => {
-    console.log('A categoria atual é: ' + catID);
-  }, [catID])
-
-  const changeAno = (ano) => {
-    setCatID(ano);
-    filterByAno(ano);
-  }
-
-  const filterByAno = (numero) =>{
-    const novaLista = allHouses.filter((item)=>{
-      return item.ano === numero;
-    })
-    setfilterHouses(novaLista);
-  }
+  const [tableGeralAberta, setTableGeralAberta] = useState(false);
+  const [tableAutorAberta, setTableAutorAberta] = useState(false);
+  const [tableAutorAnoAberta, setTableAutorAnoAberta] = useState(false);
+  const [tableEstadoAberta, setTableEstadoAberta] = useState(false);
+  const [tableEstadoAutorAberta, setTableEstadoAutorAberta] = useState(false);
+  const [tableAnoAberta, setTableAnoAberta] = useState(false);
+  const [tableOrgaoAberta, setTableOrgaoAberta] = useState(false);
 
   return (
     <div>
@@ -52,31 +36,84 @@ function App() {
       <Title/>
       <TableResumo/>
 
-      <div className='my-5 border-bottom'>
-        <Table/>
-      </div>
-
-      <div className='row my-5 border-bottom'>
-        <div className='col-6'><TableSimples campo="estado"/></div>
-        <div className='col-6'><TableSimples campo="autor"/></div>
-      </div>
-
-      <div className='row my-5 border-bottom'>
-        <div className='col-6'><TableSimples campo="ano"/></div>
-        <div className='col-6'><TableSimples campo="orgao"/></div>
-      </div>
-
-      <div className='row my-5 border-bottom'>
-        <div className='col-6'>
-          <TableAutorAno/>
+      <div className='text-white container-airbnb row text-center'>
+        <div className='row mt-5'>
+          <div className='col-12' >
+                {tableGeralAberta ? (
+                  <span class="fs-1 mdi mdi-close-circle-outline" onClick={() => setTableGeralAberta(false)}></span>
+                ) : (
+                  <img src={geral} alt="Título" onClick={() => setTableGeralAberta(true)} className="tables" />
+                )}
+                {tableGeralAberta && <Table />}
+              </div>
         </div>
-        <div className='col-6'>
-          <TableEstadoAutor/>
+        <div className='row mt-5'>
+          <div className='col-6'>
+            {tableAutorAberta ? (
+              <span class="fs-1 mdi mdi-close-circle-outline" onClick={() => setTableAutorAberta(false)}></span>
+            ) : (
+              <img src={autor} alt="Título" onClick={() => setTableAutorAberta(true)} className="tables" />
+            )}
+            {tableAutorAberta && <TableSimples campo="autor"/>}
+          </div>
+          <div className='col-6'>
+            {tableEstadoAberta ? (
+              <span class="fs-1 mdi mdi-close-circle-outline" onClick={() => setTableEstadoAberta(false)}></span>
+            ) : (
+              <img src={estado} alt="Título" onClick={() => setTableEstadoAberta(true)} className="tables" />
+            )}
+            {tableEstadoAberta && <TableSimples campo="estado"/>}
+          </div>
         </div>
+        <div className='row mt-5'>
+          <div className='col-6'>
+            {tableAnoAberta ? (
+              <span class="fs-1 mdi mdi-close-circle-outline" onClick={() => setTableAnoAberta(false)}></span>
+            ) : (
+              <img src={ano} alt="Título" onClick={() => setTableAnoAberta(true)} className="tables" />
+            )}
+            {tableAnoAberta && <TableSimples campo="ano"/>}
+          </div>
+
+          <div className='col-6'>
+            {tableOrgaoAberta ? (
+              <span class="fs-1 mdi mdi-close-circle-outline" onClick={() => setTableOrgaoAberta(false)}></span>
+            ) : (
+              <img src={orgao} alt="Título" onClick={() => setTableOrgaoAberta(true)} className="tables" />
+            )}
+            {tableOrgaoAberta && <TableSimples campo="orgao"/>}
+          </div>
+        </div>
+        <div className='row mt-5'>
+          <div className='col-6'>
+                {tableAutorAnoAberta ? (
+                  <span class="fs-1 mdi mdi-close-circle-outline" onClick={() => setTableAutorAnoAberta(false)}></span>
+                ) : (
+                  <img src={autorano} alt="Título" onClick={() => setTableAutorAnoAberta(true)} className="tables" />
+                )}
+                {tableAutorAnoAberta && <TableAutorAno/>}
+              </div>
+
+              <div className='col-6'>
+                {tableEstadoAutorAberta ? (
+                  <span class="fs-1 mdi mdi-close-circle-outline" onClick={() => setTableEstadoAutorAberta(false)}></span>
+                ) : (
+                  <img src={estadoautor} alt="Título" onClick={() => setTableEstadoAutorAberta(true)} className="tables" />
+                )}
+                {tableEstadoAutorAberta && <TableEstadoAutor/>}
+              </div>
+          </div>
       </div>
 
-      
-      
+
+
+
+  
+
+  
+
+  
+
       <Footer/>
     </div>
   )

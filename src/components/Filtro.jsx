@@ -4,8 +4,6 @@ import ButtonGroup from './ButtonGroup';
 import Table from './Table';
 import { useEffect, useState } from 'react';
 
-//Importar os dados de categoria
-import { processos } from '../../backend/dados';
 
 export default function Filtro({ changeAno }) {
     const [anoClicado, setAnoClicado] = useState([]);

@@ -176,13 +176,13 @@ export default function TableSimples({ campo }) {
   }, [campoSearchValue]);
 
   return (
-    <div className="container-airbnb row">
+    <div className="container-airbnb row border-bottom border-dark">
       <div className="container">
         <div className="row">
-          <span className="fs-4 fw-bold">{`Por ${campo}`}</span>
+          <span className="fs-2 fw-bold titulo">{`Por ${campo}`}</span>
         </div>
-        <div className="row justify-content-between align-items-center my-1">
-          <div className="col autosuggest-container">
+        <div className="row text-white justify-content-between align-items-center my-1">
+          <div className="col mt-2 autosuggest-container">
             <Autosuggest
               suggestions={campoSuggestions}
               onSuggestionsFetchRequested={({ value }) => setCampoSuggestions(getCampoSuggestions(value))}
@@ -197,14 +197,14 @@ export default function TableSimples({ campo }) {
             />
           </div>
           <div className="col">
-            <button type="button" className="btn btn-light border-dark" onClick={handleReset}>
-              <i className="mdi mdi-backspace"></i>
+            <button type="button" className="fs-6 p-2 botao btn btn-dark border-dark" onClick={handleReset}>
+              <i className="fs-6 mdi mdi-backspace"></i>
               &nbsp; Limpar
             </button>
           </div>
           <div className='col'>
-            <span className="fw-bold">Processos por página:</span>
-            <select value={processosPorPagina} onChange={handleChangeProcessosPorPagina}>
+            <span className="fw-bold">Processos por página:&nbsp;</span>
+            <select className='text-white select border-0' value={processosPorPagina} onChange={handleChangeProcessosPorPagina}>
               <option value={3}>3</option>
               <option value={5}>5</option>
               <option value={10}>10</option>
@@ -216,7 +216,7 @@ export default function TableSimples({ campo }) {
         </div>
       </div>
 
-      <table className="table table-light table-striped border">
+      <table className="table table-dark table-hover table-bordered">
         <thead>
           <tr>
             <th scope="col">
@@ -253,19 +253,19 @@ export default function TableSimples({ campo }) {
         </tbody>
       </table>
       <div>
-        <button onClick={handlePrevious} disabled={startIndex === 0}>
+        <button className='botao btn btn-dark border-dark' onClick={handlePrevious} disabled={startIndex === 0}>
           Anterior
         </button>
-        <button onClick={handleNext} disabled={startIndex + processosPorPagina >= processos.length}>
+        <button className='botao btn btn-dark border-dark' onClick={handleNext} disabled={startIndex + processosPorPagina >= processos.length}>
           Próximo
         </button>
       </div>
 
-      <div>
-      <button onClick={() => openModal('quantidade_processos')}>Abrir Gráfico de Quantidade</button>
-      <button onClick={() => openModal('valor_total_processos')}>Abrir Gráfico de Valor</button>
+      <div className='mt-2 mb-4'>
+      <button className='botao btn btn-dark border-dark"' onClick={() => openModal('quantidade_processos')}>Abrir Gráfico de Quantidade</button>
+      <button className='botao btn btn-dark border-dark' onClick={() => openModal('valor_total_processos')}>Abrir Gráfico de Valor</button>
 
-      <Modal show={showModal} onHide={() => setShowModal(false)}>
+      <Modal show={showModal} onHide={() => setShowModal(false) }contentClassName='bg-dark text-white border-dark'>
       <Modal.Header closeButton>
         <Modal.Title>Gráfico</Modal.Title>
       </Modal.Header>
@@ -277,7 +277,7 @@ export default function TableSimples({ campo }) {
             <YAxis />
             <Tooltip />
             <Legend />
-            <Bar dataKey="quantidade_processos" fill="#8884d8" />
+            <Bar dataKey="quantidade_processos" fill="#58A491" />
           </BarChart>
         )}
         {selectedChart === 'valor_total_processos' && (
@@ -287,7 +287,7 @@ export default function TableSimples({ campo }) {
             <YAxis domain={[0, 'dataMax + 6000000']} />
             <Tooltip />
             <Legend />
-            <Bar dataKey="valor_total_processos" fill="#8884d8" />
+            <Bar dataKey="valor_total_processos" fill="#58A491" />
           </BarChart>
         )}
       </Modal.Body>

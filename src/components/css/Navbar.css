@@ -2,8 +2,7 @@
     display:flex;
     width: 100%;
     height: 40px;
-    background: white;
-    border-bottom: 1px solid #ececec;
+    background-color: #1c1e1f;
 }
 
 .logo{
@@ -11,9 +10,9 @@
 }
 
 .link-especial{
-    color: #161616;
+    color: #ffffff;
     font-weight: 500;
-    font-size: 15px;
+    font-size: 16px;
     text-decoration: none;
     padding:8px;
 }

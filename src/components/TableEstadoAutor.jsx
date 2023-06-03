@@ -255,15 +255,15 @@ const handleReset = () => {
   
 
   return (
-    <div className="container-airbnb row">
+    <div className="container-airbnb row ">
 
       <div className='container'>
         <div className='row'>
-          <span className='fs-4 fw-bold'>{`Por Estado/Autor`}</span>
+          <span className='fs-4 fw-bold titulo'>{`Por Estado/Autor`}</span>
         </div>
-        <div className="row justify-content-between align-items-center my-1">
+        <div className="row text-white justify-content-between align-items-center my-1">
           <div className="col">
-            <select value={searchBy} onChange={(e) => setSearchBy(e.target.value)}>
+            <select className='text-white select border-0' value={searchBy} onChange={(e) => setSearchBy(e.target.value)}>
               <option value="">Pesquisar por</option>
               <option value="autor">Autor</option>
               <option value="estado">Estado</option>
@@ -298,14 +298,14 @@ const handleReset = () => {
             )}
             </div>
           <div className='col'>
-          <button type="button" className="btn btn-light border-dark" onClick={handleReset}>
-              <i className='mdi mdi-backspace'></i>
+          <button type="button" className="botao fs-6 p-2 btn btn-light border-dark" onClick={handleReset}>
+              <i className='fs-6 mdi mdi-backspace'></i>
               &nbsp; Limpar
           </button>
           </div>
           <div className='col'>
-            <span className="fw-bold">Processos por página:</span>
-            <select value={processosPorPagina} onChange={handleChangeProcessosPorPagina}>
+            <span className="fw-bold">Processos por página:&nbsp;</span>
+            <select className='text-white select border-0' value={processosPorPagina} onChange={handleChangeProcessosPorPagina}>
               <option value={3}>3</option>
               <option value={5}>5</option>
               <option value={10}>10</option>
@@ -317,7 +317,7 @@ const handleReset = () => {
         </div>
       </div>
 
-  <table className="table table-light table-striped border">
+  <table className="table table-dark table-hover table-bordered">
   <thead>
     <tr>
       <th scope="col">Estado{' '}
@@ -357,19 +357,19 @@ const handleReset = () => {
   </tbody>
 </table>
 <div>
-  <button onClick={handlePrevious} disabled={startIndex === 0}>
+  <button className='botao btn btn-dark border-dark' onClick={handlePrevious} disabled={startIndex === 0}>
     Anterior
   </button>
-  <button onClick={handleNext} disabled={startIndex + processosPorPagina >= processos.length}>
+  <button className='botao btn btn-dark border-dark' onClick={handleNext} disabled={startIndex + processosPorPagina >= processos.length}>
     Próximo
   </button>
 </div>
 <div>
-        <div>
-          <button onClick={() => openModal('quantidade_processos')}>Abrir Gráfico de Quantidade</button>
-          <button onClick={() => openModal('valor_total_processos')}>Abrir Gráfico de Valor</button>
+        <div className='mt-2 mb-4'>
+          <button className='botao btn btn-dark border-dark' onClick={() => openModal('quantidade_processos')}>Abrir Gráfico de Quantidade</button>
+          <button className='botao btn btn-dark border-dark' onClick={() => openModal('valor_total_processos')}>Abrir Gráfico de Valor</button>
         </div>
-        <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal show={showModal} onHide={() => setShowModal(false)} contentClassName='bg-dark text-white border-dark'>
           <Modal.Header closeButton>
             <Modal.Title>Gráfico</Modal.Title>
           </Modal.Header>
@@ -381,7 +381,7 @@ const handleReset = () => {
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="quantidade_processos" fill="#8884d8" />
+                <Bar dataKey="quantidade_processos" fill="#58A491" />
               </BarChart>
             )}
             {selectedChart === 'valor_total_processos' && (
@@ -391,7 +391,7 @@ const handleReset = () => {
                 <YAxis domain={[0, 'dataMax + 6000000']} />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="valor_total_processos" fill="#82ca9d" />
+                <Bar dataKey="valor_total_processos" fill="#58A491" />
               </BarChart>
             )}
           </Modal.Body>

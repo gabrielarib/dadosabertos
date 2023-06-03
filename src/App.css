@@ -5,5 +5,10 @@
     padding-right: 80px;
     margin-left:auto;
     margin-right: auto;
-    
 }
+
+.tables {
+    height: 300px !important;
+    width: auto !important;
+  }
+  
