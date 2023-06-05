@@ -36,7 +36,9 @@ function App() {
       <Title/>
       <TableResumo/>
 
-      <div className='text-white container-airbnb row text-center'>
+      <h1 className='container-airbnb text-white fw-bold'>Visualizar por</h1>
+
+      <div className='text-white container-airbnb row text-center'>  
         <div className='row mt-5'>
           <div className='col-12' >
                 {tableGeralAberta ? (
