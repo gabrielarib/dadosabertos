@@ -50,7 +50,7 @@ export default function TableEstadoAutor() {
       return {
         ...processo,
         Ano: processo.Ano.toString(),
-        Mes: processo.Mes.toString(),
+        Mês: processo.Mês.toString(),
         Cod_uo: processo.Cod_uo.toString(),
         Valor_Solicitado: processo.Valor_Solicitado.toString(),
       };
@@ -473,8 +473,8 @@ const handleSortByAno = () => {
     sortedProcessos.sort((a, b) => {
       if (a.Ano < b.Ano) return -1;
       if (a.Ano > b.Ano) return 1;
-      if (a.Mes < b.Mes) return -1;
-      if (a.Mes > b.Mes) return 1;
+      if (a.Mês < b.Mês) return -1;
+      if (a.Mês > b.Mês) return 1;
       return 0;
     });
     setAnoOrder('desc');
@@ -482,8 +482,8 @@ const handleSortByAno = () => {
     sortedProcessos.sort((a, b) => {
       if (a.Ano > b.Ano) return -1;
       if (a.Ano < b.Ano) return 1;
-      if (a.Mes > b.Mes) return -1;
-      if (a.Mes < b.Mes) return 1;
+      if (a.Mês > b.Mês) return -1;
+      if (a.Mês < b.Mês) return 1;
       return 0;
     });
     setAnoOrder('asc');
@@ -836,10 +836,10 @@ useEffect(() => {
         <td>{processo.Uf_beneficiario}</td>
         <td>{processo.Nome_orgao}</td>
         <td>{processo.Cod_uo}</td>
-        <td>{processo.Ano}-{processo.Mes}</td>
+        <td>{processo.Ano}-{processo.Mês}</td>
         <td>{processo.Objeto}</td>
         <td>{processo.Justificativa}</td>
-        <td>{processo.Valor_Solicitado.toLocaleString('pt-BR')}</td>
+        <td>{processo.Valor_Solicitado}</td>
       </tr>
     ))}
   </tbody>

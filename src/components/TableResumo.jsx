@@ -25,11 +25,16 @@ export default function TableResumo() {
       <table className="table table-dark table-striped table-bordered">
         <thead>
           <tr>
-            <th scope="col"> Quantidade de Emendas do Relator{' '} </th>
-            <th scope="col"> Valor Total{' '} </th>
-            <th scope="col"> Quantidade de Estados{' '}</th>
-            <th scope="col">Quantidade de Beneficiarios{' '}</th>
-            <th scope="col">Quantidade de Anos{' '}</th>
+            <th scope="col">Processos{' '} </th>
+            <th scope="col">Valor Total{' '} </th>
+            <th scope="col">Estados{' '}</th>
+            <th scope="col">Beneficiarios{' '}</th>
+            <th scope="col">Autores{' '}</th>
+            <th scope="col">Orgãos{' '}</th>
+            <th scope="col">Anos{' '}</th>
+            <th scope="col">Valor Máximo{' '}</th>
+            <th scope="col">Valor Mínimo{' '}</th>
+            
           </tr>
         </thead>
         <tbody>
@@ -39,7 +44,11 @@ export default function TableResumo() {
               <td>{processo.valor_total_processos}</td>
               <td>{processo.quantidade_estados}</td>
               <td>{processo.quantidade_beneficiarios}</td>
+              <td>{processo.quantidade_autores}</td>
+              <td>{processo.quantidade_orgao}</td>
               <td>{processo.Anos}</td>
+              <td>{processo.maior_valor}</td>
+              <td>{processo.menor_valor}</td>
             </tr>
           ))}
         </tbody>

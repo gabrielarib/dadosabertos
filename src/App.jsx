@@ -40,7 +40,7 @@ function App() {
         <div className='row mt-5'>
           <div className='col-12' >
                 {tableGeralAberta ? (
-                  <span class="fs-1 mdi mdi-close-circle-outline" onClick={() => setTableGeralAberta(false)}></span>
+                  <span className="fs-1 mdi mdi-close-circle-outline" onClick={() => setTableGeralAberta(false)}></span>
                 ) : (
                   <img src={geral} alt="Título" onClick={() => setTableGeralAberta(true)} className="tables" />
                 )}
@@ -50,7 +50,7 @@ function App() {
         <div className='row mt-5'>
           <div className='col-6'>
             {tableAutorAberta ? (
-              <span class="fs-1 mdi mdi-close-circle-outline" onClick={() => setTableAutorAberta(false)}></span>
+              <span className="fs-1 mdi mdi-close-circle-outline" onClick={() => setTableAutorAberta(false)}></span>
             ) : (
               <img src={autor} alt="Título" onClick={() => setTableAutorAberta(true)} className="tables" />
             )}
@@ -58,7 +58,7 @@ function App() {
           </div>
           <div className='col-6'>
             {tableEstadoAberta ? (
-              <span class="fs-1 mdi mdi-close-circle-outline" onClick={() => setTableEstadoAberta(false)}></span>
+              <span className="fs-1 mdi mdi-close-circle-outline" onClick={() => setTableEstadoAberta(false)}></span>
             ) : (
               <img src={estado} alt="Título" onClick={() => setTableEstadoAberta(true)} className="tables" />
             )}
@@ -68,7 +68,7 @@ function App() {
         <div className='row mt-5'>
           <div className='col-6'>
             {tableAnoAberta ? (
-              <span class="fs-1 mdi mdi-close-circle-outline" onClick={() => setTableAnoAberta(false)}></span>
+              <span className="fs-1 mdi mdi-close-circle-outline" onClick={() => setTableAnoAberta(false)}></span>
             ) : (
               <img src={ano} alt="Título" onClick={() => setTableAnoAberta(true)} className="tables" />
             )}
@@ -77,7 +77,7 @@ function App() {
 
           <div className='col-6'>
             {tableOrgaoAberta ? (
-              <span class="fs-1 mdi mdi-close-circle-outline" onClick={() => setTableOrgaoAberta(false)}></span>
+              <span className="fs-1 mdi mdi-close-circle-outline" onClick={() => setTableOrgaoAberta(false)}></span>
             ) : (
               <img src={orgao} alt="Título" onClick={() => setTableOrgaoAberta(true)} className="tables" />
             )}
@@ -87,7 +87,7 @@ function App() {
         <div className='row mt-5'>
           <div className='col-6'>
                 {tableAutorAnoAberta ? (
-                  <span class="fs-1 mdi mdi-close-circle-outline" onClick={() => setTableAutorAnoAberta(false)}></span>
+                  <span className="fs-1 mdi mdi-close-circle-outline" onClick={() => setTableAutorAnoAberta(false)}></span>
                 ) : (
                   <img src={autorano} alt="Título" onClick={() => setTableAutorAnoAberta(true)} className="tables" />
                 )}
@@ -96,7 +96,7 @@ function App() {
 
               <div className='col-6'>
                 {tableEstadoAutorAberta ? (
-                  <span class="fs-1 mdi mdi-close-circle-outline" onClick={() => setTableEstadoAutorAberta(false)}></span>
+                  <span className="fs-1 mdi mdi-close-circle-outline" onClick={() => setTableEstadoAutorAberta(false)}></span>
                 ) : (
                   <img src={estadoautor} alt="Título" onClick={() => setTableEstadoAutorAberta(true)} className="tables" />
                 )}
