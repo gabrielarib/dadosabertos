@@ -28,7 +28,8 @@ export default function TableSimples({ campo }) {
       return processos.map((processo) => {
         return {
           ...processo,
-          ano: processo.ano.toString()
+          ano: processo.ano.toString(),
+          valor_total_processos: processo.valor_total_processos.toString()
         };
       });
     }

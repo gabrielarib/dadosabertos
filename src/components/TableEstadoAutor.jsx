@@ -27,6 +27,17 @@ export default function TableEstadoAutor() {
   const [searchBy, setSearchBy] = useState(''); // Estado inicial vazio
   const [searchValue, setSearchValue] = useState(''); // Estado inicial vazio
 
+
+  
+  const transformProcessoAnoToString = (processos) => {
+    return processos.map((processo) => {
+      return {
+        ...processo,
+        valor_total_processos: processo.valor_total_processos.toString()
+      };
+    });
+  };
+
   useEffect(() => {
   let filtered = processos;
 
@@ -89,8 +100,9 @@ const handleReset = () => {
     axios.get(`http://localhost:3000/processo/processoPorEstadoAutor`)
 
       .then(response => {
-        setProcessos(response.data);
-        setFilteredProcessos(response.data); 
+        const transformedProcessos = transformProcessoAnoToString(response.data);
+        setProcessos(transformedProcessos);
+        setFilteredProcessos(transformedProcessos);
       })
       .catch(error => {
         console.log(error);

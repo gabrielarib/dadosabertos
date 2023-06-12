@@ -839,7 +839,7 @@ useEffect(() => {
         <td>{processo.Ano}-{processo.Mês}</td>
         <td>{processo.Objeto}</td>
         <td>{processo.Justificativa}</td>
-        <td>{processo.Valor_Solicitado}</td>
+        <td>{processo.Valor_Solicitado.toLocaleString('pt-BR')}</td>
       </tr>
     ))}
   </tbody>

@@ -32,7 +32,8 @@ export default function TableAutorAno() {
     return processos.map((processo) => {
       return {
         ...processo,
-        Ano: processo.Ano.toString()
+        Ano: processo.Ano.toString(),
+        valor_total_processos: processo.valor_total_processos.toString()
       };
     });
   };
@@ -355,7 +356,7 @@ export default function TableAutorAno() {
           <td>{processo.Autor}</td>
           <td>{processo.Ano}</td>
           <td>{processo.quantidade_processos}</td>
-          <td>{processo.valor_total_processos}</td>
+          <td>{processo.valor_total_processos.toLocaleString('pt-BR')}</td>
         </tr>
       ))}
   </tbody>
